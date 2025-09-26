@@ -1,4 +1,4 @@
-# This file is part of sphinx-ext-template.
+# This file is part of sphinx-config-options.
 #
 # Copyright 2025 Canonical Ltd.
 #
@@ -27,5 +27,5 @@ html_title = project
 html_theme = "furo"
 
 extensions = [
-    "hello_ext",
+    "sphinx_config_options",
 ]

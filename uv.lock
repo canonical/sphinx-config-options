@@ -248,52 +248,6 @@ wheels = [
 ]
 
 [[package]]
-name = "hello-ext"
-source = { editable = "." }
-dependencies = [
-    { name = "docutils" },
-    { name = "sphinx" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "bs4" },
-    { name = "furo" },
-    { name = "lxml" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-mock" },
-]
-lint = [
-    { name = "mypy" },
-]
-types = [
-    { name = "types-docutils" },
-    { name = "types-setuptools" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "docutils", specifier = ">=0.21.2" },
-    { name = "sphinx", specifier = "~=7.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "bs4", specifier = ">=0.0.2" },
-    { name = "furo", specifier = ">=2025.7.19" },
-    { name = "lxml", specifier = ">=5.0" },
-    { name = "pytest", specifier = ">=8.4.0" },
-    { name = "pytest-cov", specifier = "~=6.0" },
-    { name = "pytest-mock", specifier = "~=3.12" },
-]
-lint = [{ name = "mypy", specifier = ">=1.16.0" }]
-types = [
-    { name = "types-docutils" },
-    { name = "types-setuptools" },
-]
-
-[[package]]
 name = "idna"
 version = "3.10"
 source = { registry = "https://pypi.org/simple" }
@@ -670,6 +624,52 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/98/0b/a866924ded68efec7a1759587a4e478aec7559d8165fac8b2ad1c0e774d6/sphinx_basic_ng-1.0.0b2.tar.gz", hash = "sha256:9ec55a47c90c8c002b5960c57492ec3021f5193cb26cebc2dc4ea226848651c9", size = 20736, upload-time = "2023-07-08T18:40:54.166Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3c/dd/018ce05c532a22007ac58d4f45232514cd9d6dd0ee1dc374e309db830983/sphinx_basic_ng-1.0.0b2-py3-none-any.whl", hash = "sha256:eb09aedbabfb650607e9b4b68c9d240b90b1e1be221d6ad71d61c52e29f7932b", size = 22496, upload-time = "2023-07-08T18:40:52.659Z" },
+]
+
+[[package]]
+name = "sphinx-config-options"
+source = { editable = "." }
+dependencies = [
+    { name = "docutils" },
+    { name = "sphinx" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "bs4" },
+    { name = "furo" },
+    { name = "lxml" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "pytest-mock" },
+]
+lint = [
+    { name = "mypy" },
+]
+types = [
+    { name = "types-docutils" },
+    { name = "types-setuptools" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "docutils", specifier = ">=0.21.2" },
+    { name = "sphinx", specifier = "~=7.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "bs4", specifier = ">=0.0.2" },
+    { name = "furo", specifier = ">=2025.7.19" },
+    { name = "lxml", specifier = ">=5.0" },
+    { name = "pytest", specifier = ">=8.4.0" },
+    { name = "pytest-cov", specifier = "~=6.0" },
+    { name = "pytest-mock", specifier = "~=3.12" },
+]
+lint = [{ name = "mypy", specifier = ">=1.16.0" }]
+types = [
+    { name = "types-docutils" },
+    { name = "types-setuptools" },
 ]
 
 [[package]]
