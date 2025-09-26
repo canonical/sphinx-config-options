@@ -1,4 +1,4 @@
-PROJECT=hello_ext
+PROJECT=sphinx-config-options
 UV_TEST_GROUPS := "--group=dev"
 UV_LINT_GROUPS := "--group=lint" "--group=types"
 
