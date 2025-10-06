@@ -19,6 +19,7 @@
 from unittest.mock import Mock
 
 import pytest
+from docutils.statemachine import StringList
 from sphinx_config_options import ConfigOption, parse_option
 
 
@@ -49,7 +50,7 @@ def mock_directive():
         name="option",
         arguments=["test_option"],
         options={"shortdesc": "Test option description"},
-        content=[],
+        content=StringList(),
         lineno=1,
         content_offset=0,
         block_text="",

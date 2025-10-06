@@ -17,10 +17,8 @@
 """Contains the core elements of the sphinx-config-options extension."""
 
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    from typing import Optional
+from typing import Any, cast, TypeVar
+from collections.abc import Iterable
 
 from docutils import nodes
 from docutils.parsers.rst import directives
@@ -34,13 +32,14 @@ from sphinx.roles import XRefRole
 from sphinx.util import logging
 from sphinx.util.nodes import make_refnode
 from sphinx.util.typing import ExtensionMetadata
+from typing_extensions import override
 
 from sphinx_config_options import common
 
 try:
     from ._version import __version__
 except ImportError:  # pragma: no cover
-    from importlib.metadata import PackageNotFoundError, version
+    from importlib.metadata import version, PackageNotFoundError
 
     try:
         __version__ = version("sphinx-config-options")
@@ -48,10 +47,11 @@ except ImportError:  # pragma: no cover
         __version__ = "dev"
 
 
-logger = logging.getLogger(__name__)
+Logger = logging.getLogger(__name__)
+ObjDescT = TypeVar("ObjDescT")
 
 
-def parse_option(obj: ObjectDescription, option: str) -> nodes.inline:
+def parse_option(obj: ObjectDescription[ObjDescT], option: str) -> nodes.inline:
     """Parse rST inside an option field.
 
     Args:
@@ -63,13 +63,13 @@ def parse_option(obj: ObjectDescription, option: str) -> nodes.inline:
 
     """
     new_node = nodes.inline()
-    parse_node = ViewList()
+    parse_node: ViewList[str] = ViewList()
     parse_node.append(option, "parsing", 1)
-    obj.state.nested_parse(parse_node, 0, new_node)
+    obj.state.nested_parse(parse_node, 0, new_node)  # type: ignore[reportUnknownMemberType]
     return new_node
 
 
-class ConfigOption(ObjectDescription):
+class ConfigOption(ObjectDescription[ObjDescT]):
     """Directive for documenting configuration options."""
 
     optional_fields = {
@@ -119,7 +119,7 @@ class ConfigOption(ObjectDescription):
         key["classes"].append("key")
 
         if "shortdesc" not in self.options:
-            logger.warning(
+            Logger.warning(
                 f"The option fields for the {self.arguments[0]} option could not be parsed. "
                 "No output was generated."
             )
@@ -151,7 +151,7 @@ class ConfigOption(ObjectDescription):
         fields += tgroup
         tgroup += nodes.colspec(colwidth=1)
         tgroup += nodes.colspec(colwidth=3)
-        rows = []
+        rows: list[nodes.row] = []
 
         # Add the key name again
         row_node = nodes.row()
@@ -181,7 +181,7 @@ class ConfigOption(ObjectDescription):
         tbody.extend(rows)
         tgroup += tbody
         details += fields
-        self.state.nested_parse(self.content, self.content_offset, details)
+        self.state.nested_parse(self.content, self.content_offset, details)  # type: ignore[reportUnknownMemberType]
 
         # Create a new container node with the content
         new_node = nodes.container()
@@ -190,7 +190,7 @@ class ConfigOption(ObjectDescription):
         new_node += details
 
         # Register the target with the domain
-        config_domain = self.env.get_domain("config")
+        config_domain = cast(ConfigDomain, self.env.get_domain("config"))
         config_domain.add_option(self.arguments[0], scope)
 
         # Return the content and target node
@@ -204,8 +204,9 @@ class ConfigIndex(Index):
     name = "options"
     localname = "Configuration options"
 
+    @override
     def generate(
-        self, _docnames: list[str] | None = None
+        self, docnames: Iterable[str] | None = None
     ) -> tuple[list[tuple[str, list[Any]]], bool]:
         """Generate the index content."""
         content: dict[str, list[Any]] = defaultdict(list)
@@ -214,8 +215,8 @@ class ConfigIndex(Index):
         # sort by key name
         options = sorted(options, key=lambda option: (option[1], option[4]))
 
-        dispnames = []
-        duplicates = []
+        dispnames: list[str] = []
+        duplicates: list[str] = []
         for _name, dispname, _typ, _docname, anchor, _priority in options:
             fullname = anchor.partition(":")[0].partition("-")[0] + "-" + dispname
             if fullname in dispnames:
@@ -254,22 +255,24 @@ class ConfigDomain(Domain):
     label = "Configuration Options"
     roles = {"option": XRefRole()}
     directives = {"option": ConfigOption}
-    indices = {ConfigIndex}
-    initial_data = {"config_options": []}
+    indices = [ConfigIndex]
+    initial_data: dict[str, list[str]] = {"config_options": []}
 
-    def get_objects(self) -> list[tuple[str, str, str, str, str, int]]:
+    @override
+    def get_objects(self) -> Iterable[tuple[str, str, str, str, str, int]]:
         """Return an iterable of tuples describing the objects in this domain."""
         yield from self.data["config_options"]
 
+    @override
     def resolve_xref(
         self,
-        _env: BuildEnvironment,
+        env: BuildEnvironment,
         fromdocname: str,
         builder: Builder,
-        _typ: str,
+        typ: str,
         target: str,
-        _node: nodes.Element,
-        _contnode: nodes.Element,
+        node: nodes.Element,
+        contnode: nodes.Element,
     ) -> nodes.Element | None:
         """Find the node that is being referenced."""
         # If the scope isn't specified, default to "server"
@@ -278,7 +281,7 @@ class ConfigDomain(Domain):
 
         matches = [
             (key, docname, anchor)
-            for key, sig, typ_match, docname, anchor, prio in self.get_objects()
+            for key, _, typ_match, docname, anchor, _ in self.get_objects()
             if anchor == target and typ_match == "option"
         ]
 
@@ -296,17 +299,18 @@ class ConfigDomain(Domain):
             )
             refnode["classes"].append("configref")
             return refnode
-        logger.warning(f"Could not find target {target} in {fromdocname}")
+        Logger.warning(f"Could not find target {target} in {fromdocname}")
         return None
 
+    @override
     def resolve_any_xref(
         self,
-        _env: BuildEnvironment,
-        _fromdocname: str,
-        _builder: Builder,
-        _target: str,
-        _node: nodes.Element,
-        _contnode: nodes.Element,
+        env: BuildEnvironment,
+        fromdocname: str,
+        builder: Builder,
+        target: str,
+        node: nodes.Element,
+        contnode: nodes.Element,
     ) -> list[tuple[str, nodes.Element]]:
         """We don't want to link with "any" role, but only with "config:option"."""
         return []
@@ -317,7 +321,8 @@ class ConfigDomain(Domain):
             (key, key, "option", self.env.docname, f"{scope}:{key}", 0)
         )
 
-    def merge_domaindata(self, _docnames: list[str], otherdata: dict[str, Any]) -> None:
+    @override
+    def merge_domaindata(self, docnames: list[str], otherdata: dict[str, Any]) -> None:
         """Merge domain data from multiple processes."""
         for option in otherdata["config_options"]:
             if option not in self.data["config_options"]:

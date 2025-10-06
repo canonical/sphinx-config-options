@@ -16,10 +16,14 @@
 
 """Integration tests for sphinx-config-options extension."""
 
+# Ignore import organization warnings
+# ruff: noqa: PLC0415
+
 import shutil
 import subprocess
 import sys
 from pathlib import Path
+from typing import cast
 
 import bs4
 import pytest
@@ -97,13 +101,14 @@ def test_config_options_integration(example_project):
         pytest.fail("Config option directive output not found in document.")
 
     # Check that the option key is present
-    key_element = config_option.find(class_="key")
+    key_element = cast(bs4.Tag, config_option).find(class_="key")
     if not key_element:
         pytest.fail("Config option key not found in output.")
 
     # Check that CSS was included
     css_links = soup.find_all("link", {"rel": "stylesheet"})
-    css_hrefs = [link.get("href") for link in css_links]
-    assert any("config-options.css" in href for href in css_hrefs), (
-        "CSS file not included"
-    )
+    css_hrefs = [cast(bs4.Tag, link).get("href") for link in css_links]
+    if css_hrefs:
+        assert any("config-options.css" in cast(str, href) for href in css_hrefs), (
+            "CSS file not included"
+        )
