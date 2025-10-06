@@ -35,7 +35,7 @@ Logger = logging.getLogger(__name__)
 
 
 class ConfigIndex(Index):
-    """Index for configuration options."""
+    """Index for the ConfigDomain."""
 
     # To link to the index: {ref}`config-options`
     name = "options"
