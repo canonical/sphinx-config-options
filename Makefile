@@ -1,4 +1,4 @@
-PROJECT=sphinx-config-options
+PROJECT=sphinx_config_options
 UV_TEST_GROUPS := "--group=dev"
 UV_LINT_GROUPS := "--group=lint" "--group=types"
 
