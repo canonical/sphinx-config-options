@@ -108,7 +108,6 @@ def test_config_options_integration(example_project):
     # Check that CSS was included
     css_links = soup.find_all("link", {"rel": "stylesheet"})
     css_hrefs = [cast(bs4.Tag, link).get("href") for link in css_links]
-    if css_hrefs:
-        assert any("config-options.css" in cast(str, href) for href in css_hrefs), (
-            "CSS file not included"
-        )
+    assert any("config-options.css" in cast(str, href) for href in css_hrefs), (
+        "CSS file not included"
+    )
