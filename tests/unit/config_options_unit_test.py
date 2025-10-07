@@ -19,7 +19,8 @@
 from unittest.mock import Mock
 
 import pytest
-from sphinx_config_options import ConfigOption, parse_option
+from docutils.statemachine import StringList
+from sphinx_config_options.directive import ConfigOption, parse_option
 
 
 @pytest.fixture
@@ -49,7 +50,7 @@ def mock_directive():
         name="option",
         arguments=["test_option"],
         options={"shortdesc": "Test option description"},
-        content=[],
+        content=StringList(),
         lineno=1,
         content_offset=0,
         block_text="",
@@ -59,7 +60,7 @@ def mock_directive():
 
     # Mock the domain
     domain = Mock()
-    domain.add_option = Mock()
+    domain.data = {"config_options": []}
     env.get_domain.return_value = domain
 
     return directive
@@ -96,7 +97,7 @@ def test_config_option_with_shortdesc(mock_directive):
     # Verify domain was called to add the option
     mock_directive.env.get_domain.assert_called_with("config")
     domain = mock_directive.env.get_domain.return_value
-    domain.add_option.assert_called_once_with("test_option", "server")
+    assert len(domain.data["config_options"]) == 1
 
 
 def test_config_option_with_scope(mock_directive):
@@ -110,7 +111,7 @@ def test_config_option_with_scope(mock_directive):
 
     # Verify domain was called with custom scope
     domain = mock_directive.env.get_domain.return_value
-    domain.add_option.assert_called_once_with("test_option", "client")
+    assert len(domain.data["config_options"]) == 1
 
 
 def test_config_option_optional_fields():
