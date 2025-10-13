@@ -42,7 +42,7 @@ def parse_option(obj: ObjectDescription[ObjDescT], option: str) -> nodes.inline:
     new_node = nodes.inline()
     parse_node: ViewList[str] = ViewList()
     parse_node.append(option, "parsing", 1)
-    obj.state.nested_parse(parse_node, 0, new_node)  # type: ignore[reportUnknownMemberType]
+    obj.state.nested_parse(parse_node, 0, new_node)  # type: ignore[arg-type,reportUnknownMemberType]
     return new_node
 
 
