@@ -1,6 +1,7 @@
 # sphinx-config-options
 
-sphinx-config-options adds functionality to Sphinx that allows documenting configuration options with rich metadata and cross-referencing capabilities.
+sphinx-config-options adds functionality to Sphinx that allows documenting configuration
+options with rich metadata and cross-referencing capabilities.
 
 ## Basic usage
 
@@ -44,7 +45,8 @@ See the :config:option:`database.host` option for connection details.
 
 ### Automatic index generation
 
-All documented configuration options are automatically added to a searchable index available at `{ref}config-options`.
+All documented configuration options are automatically added to a searchable index
+available at `{ref}config-options`.
 
 ## Project setup
 
@@ -54,7 +56,8 @@ sphinx-config-options is published on PyPI and can be installed with:
 pip install sphinx-config-options
 ```
 
-After adding sphinx-config-options to your Python project, update your Sphinx's conf.py file to include sphinx-config-options as one of its extensions:
+After adding sphinx-config-options to your Python project, update your Sphinx's conf.py
+file to include sphinx-config-options as one of its extensions:
 
 ```python
 extensions = [
@@ -84,9 +87,11 @@ https://linuxcontainers.org/lxd/docs/latest/networks/config_options_cheat_sheet.
 
 ## Community and support
 
-You can report any issues or bugs on the project's [GitHub repository](https://github.com/canonical/sphinx-config-options).
+You can report any issues or bugs on the project's [GitHub
+repository](https://github.com/canonical/sphinx-config-options).
 
-sphinx-config-options is covered by the [Ubuntu Code of Conduct](https://ubuntu.com/community/ethos/code-of-conduct).
+sphinx-config-options is covered by the [Ubuntu Code of
+Conduct](https://ubuntu.com/community/ethos/code-of-conduct).
 
 ## License and copyright
 
