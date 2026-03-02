@@ -22,7 +22,7 @@ dev = [
     "furo>=2025.7.19",
     "lxml>=5.0",
     "pytest>=8.4.0",
-    "pytest-cov~=6.0",
+    "pytest-cov~=7.0",
     "pytest-mock~=3.12",
 ]
 
