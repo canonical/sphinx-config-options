@@ -57,7 +57,10 @@ $(document).ready(function () {
 
   /* If searching in hidden content is not supported, add an
        "Expand all options" link at the top of the page. */
-  if (!("onbeforematch" in document.body)) {
+  if (
+    !("onbeforematch" in document.body) &&
+    document.body.querySelector(".configoption")
+  ) {
     $(".main .content article h1:first-of-type").after(
       '<div id="expand-options">⤋ Expand all options</div>',
     );
