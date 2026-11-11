@@ -92,6 +92,10 @@ others have reported it. If they have, look into the current status of the topic
 one else is working on it, add a comment stating that you'd like to take it on, and a
 maintainer will assign it to you.
 
+If you'd like to implement a change that will break compatibility with existing Sphinx
+projects, be sure to mention this in the issue description. Breaking changes must be
+cleared with a maintainer and may not fit into a release for several months.
+
 If you're ever in doubt about developments in the project, ask!
 
 ### Create a development branch
