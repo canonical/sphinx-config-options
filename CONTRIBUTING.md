@@ -5,7 +5,7 @@ and practices for participating in the project.
 
 ## Review the project expectations
 
-Before you start working on the project, there are three documents for you to digest.
+Before you start working on the project, there are four documents for you to digest.
 
 ### Ubuntu Code of Conduct
 
@@ -23,6 +23,10 @@ incorporated into the repository.
 ### Open source license
 
 This project is licensed under [GPL-3.0](LICENSE).
+
+### Versioning policy
+
+This project is versioned according to [Semantic Versioning 2.0](https://semver.org).
 
 ## Report an issue or open a request
 
@@ -109,8 +113,6 @@ name as `<ticket-id>-<description>`. For example, if you're working on GitHub is
 \#235, and it's about adding a string sanitizer, you'd name your branch
 `issue-235-add-string-sanitizer-method`.
 
-````
-
 ### Commit a change
 
 Once you've made the changes to the code and you're ready to test it, start by
@@ -119,7 +121,7 @@ committing:
 ```bash
 git add -A
 git commit
-````
+```
 
 Format the commit message according to the [Conventional
 Commits](https://www.conventionalcommits.org/en/v1.0.0/) style. For the sanitizer
@@ -218,3 +220,8 @@ interface, as it leads to fewer potential conflicts with syncs.
 
 Don't force-push changes to the branch. It destroys the history of the review and makes
 it harder for maintainers to see code changes.
+
+Once approved, the maintainer will fit your changes into an upcoming release. Patch
+versions and minor versions are usually released at a regular cadence, but major
+versions aren't tagged as frequently. If your change is breaking, it may be some time
+before it's fit into a release.
